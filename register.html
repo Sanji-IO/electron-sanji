@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>IIoT Enablement</title>
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../css/photon.css">
+
+<!-- Javascript -->
+<script src="js/menu.js" charset="utf-8"></script>
+</head>
+<body>
+
+
+<header class="toolbar toolbar-header">
+	<h1 class="title">Cloud Setting</h1>
+
+	<div class="toolbar-actions">
+		<div class="btn-group">
+			<button class="btn btn-default">
+				<span class="icon icon-home"></span>
+			</button>
+		</div>
+	</div>
+</header>
+
+<form>
+<div class="form-group">
+  <label>Select Network Interface</label>
+  <select class="form-control" id="network_interfaces">
+  </select>
+</div>
+<div class="form-group">
+	<label>CG Username</label>
+	<input type="email" class="form-control" placeholder="Email" id="cg_email">
+</div>
+<div class="form-group">
+	<label>CG Password</label>
+	<input type="password" class="form-control" placeholder="Password" id="cg_passwd">
+</div>
+<div class="form-group">
+	<label>CS Token</label>
+	<textarea class="form-control" rows="3" id="cs_token"></textarea>
+</div>
+<div class="form-group">
+	<label>CS Authentication URL</label>
+	<input type="input" class="form-control" placeholder="https://thingspro.server.com" id="cs_url">
+</div>
+<div class="form-group">
+	<label>CS MQTT Broker URL</label>
+	<input type="input" class="form-control" placeholder="mqtt.thingspro.server.com" id="cs_mqtt_url">
+</div>
+<div class="form-group">
+	<label>CS MQTT Broker Port</label>
+	<input type="input" class="form-control" placeholder="8883" id="cs_mqtt_port">
+</div>
+  </div>
+</form>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-form btn-primary" id="register-button-save">Save</button>
+  </div>
+</body>
+<script src="js/register.js" charset="utf-8"></script>
+<script>
+		if (settings.has('register') === true)
+			ipcRenderer.send('asynchronous-register-form', settings.get('register'));
+</script>
+</html>

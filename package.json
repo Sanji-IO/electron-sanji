@@ -1,0 +1,14 @@
+{
+  "name": "proton-template-app",
+  "version": "1.0.0",
+  "description": "A simple template app for Proton",
+  "main": "app.js",
+  "author": "Connor Sears",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "node-ssdp": "git+https://github.com/Sanji-IO/node-ssdp.git",
+    "electron-settings": "^3.1.3"
+  }
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IIoT Enablement</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/photon.css">
+
+    <!-- Javascript -->
+    <script src="js/menu.js" charset="utf-8"></script>
+  </head>
+  <body>
+  <script>
+	/* SCHEDULER POLICY: Quick task use sync, slow task such as scan use asyn */
+	const {ipcRenderer} = require('electron')
+	var schedule = require('node-schedule');
+
+	/* SCHEDULE ASYNC SCAN WORKER EVERY 10 SEC */
+	schedule.scheduleJob('*/10 * * * * *', function(){
+		//console.log(ipcRenderer.sendSync('synchronous-message', 'runScanWorker'));
+		ipcRenderer.send('asynchronous-message', 'SCAN_WORKER_START');
+
+	})
+
+	/* SCHEDULE ASYNC CURL WORKER EVERY 20 SEC */
+	schedule.scheduleJob('*/20 * * * * *', function(){
+		ipcRenderer.send('asynchronous-message', 'CURL_WORKER_START');
+	})
+
+	/* SCHEDULE SYNC QUERY WORKER EVERY 2 SEC */
+	schedule.scheduleJob('*/2 * * * * *', function(){
+		message = ipcRenderer.sendSync('synchronous-message', 'SEARCHING_DEVICE');
+		if (message != "")
+			document.getElementById('search_device').innerHTML = message;
+	})
+
+	/* SCHEDULE CS REGISTER WORKER EVERY 5 SEC, ONLY WHEN global.registerOPStatus == true */
+	schedule.scheduleJob('*/5 * * * * *', function(){
+		ipcRenderer.send('asynchronous-message', 'CS_REG_WORKER_START');
+	})
+
+
+	ipcRenderer.on('asynchronous-reply', (event, arg) => { 
+		if (arg == 'SCAN_WORKER_COMPLETE') {
+			console.log(arg) // SCAN_WORKER TASK COMPLETE
+		}
+		if (arg == 'CURL_WORKER_COMPLETE') {
+			console.log(arg) // CURL_WORKER TASK COMPLETE
+		}
+		if (arg == 'CS_REG_WORKER_COMPLETE') {
+			console.log(arg) // CURL_WORKER TASK COMPLETE
+		}
+	})
+  </script>
+    <div class="window">
+
+      <!-- .toolbar-header sits at the top of your app -->
+      <header class="toolbar toolbar-header">
+        <h1 class="title">IIoT Enablement</h1>
+      </header>
+
+      <!-- Your app's content goes inside .window-content -->
+      <div class="window-content">
+        <div class="pane-group">
+          <div class="pane pane-sm sidebar">
+            <nav class="nav-group">
+              <h5 class="nav-group-title">Menu</h5>
+              <span class="nav-group-item" id="menu-register-button">
+                <span class="icon icon-upload-cloud"></span>
+		Cloud Setting
+              </span>
+              <span class="nav-group-item" id="menu-operation-button">
+                <span class="icon icon-play" id="menu-operation-icon"></span>
+		<div id="menu-operation-string">Start Registration</div>
+              </span>
+              <span class="nav-group-item" id="menu-clear-record-button">
+                <span class="icon icon-trash"></span>
+                Clear All Record
+              </span>
+              <span class="nav-group-item" id="menu-wifi-setting">
+                <span class="icon icon-signal"></span>
+                WiFi Setting
+              </span>
+            </nav>
+          </div>
+
+          <div class="pane">
+            <table class="table-striped">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>IPv6 Address(LAN)</th>
+                  <th>Serial Number</th>
+                  <th>Firmware Version</th>
+                  <th>Register Date</th>
+                  <th>Status</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody id='search_device'></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+    <script src="js/main-menu.js" charset="utf-8"></script>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>IIoT Enablement</title>
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../css/photon.css">
+
+<!-- Javascript -->
+<script src="js/menu.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="window">
+<header class="toolbar toolbar-header">
+	<h1 class="title">WiFi Setting</h1>
+
+	<div class="toolbar-actions">
+		<div class="btn-group">
+			<button class="btn btn-default">
+				<span class="icon icon-home"></span>
+			</button>
+		</div>
+	</div>
+</header>
+      <div class="window-content">
+        <div class="pane-group">
+          <div class="pane pane-sm sidebar">
+<ul class="list-group" id="wifi-group">
+  <li class="list-group-header">
+    <input class="form-control" type="text" placeholder="Search for device">
+  </li>
+</ul>
+
+ 	  </div>
+
+          <div class="pane" id="search-content">
+
+			  <div class="form-group">
+				  <img id="scan" src="images/loading.gif" style="visibility: hidden;" height="50" width="50">
+			  </div>
+			  <div class="form-group">
+				  <label>Select Access Point</label>
+				  <select class="form-control" id="ap_list">
+				  </select>
+			  </div>
+			  <div class="form-group">
+				  <label>Access Point Password</label>
+				  <input type="password" class="form-control" placeholder="Password" id="ap_passwd">
+			  </div>
+			  <div class="form-group">
+				  <input type="text" class="form-control" id="uuid" style="visibility: hidden;">
+			  </div>
+			  <div class="checkbox">
+				  <label> <input type="checkbox" id="use_bssid">Check if you want to match BSSID. 
+					  <br>On more then single same ssid environment, default will
+					   match SSID without looking for BSSID match.</label>
+			  </div>
+			   <div class="form-actions">
+    				<button class="btn btn-form btn-primary" id="save_wifi">Save</button>
+  			</div>
+	  </div>
+
+	</div>
+</div>
+</div>
+
+</body>
+<script src="js/wifi.js" charset="utf-8"></script>
+<script>
+	ipcRenderer.send('asynchronous-wifi-query', 'SEARCH_WIFI_VIA_CLOUD');
+</script>
+</html>
+
